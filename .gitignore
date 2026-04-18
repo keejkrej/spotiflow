@@ -147,3 +147,9 @@ stat/
 
 # Version file
 spotiflow/_version.py
+
+# Generated visualization outputs
+spotiflow_3d_*.html
+spotiflow_3d_*.png
+viz_*.html
+viz_*.png

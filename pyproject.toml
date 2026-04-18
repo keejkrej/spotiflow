@@ -52,6 +52,7 @@ dependencies = [
     "typing-extensions",
     "wandb!=0.23.1",
     "zarr",
+    "plotly>=6.7.0",
 ]
 
 [project.scripts]
