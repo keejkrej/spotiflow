@@ -1,9 +1,81 @@
 [build-system]
-requires = ["setuptools<=71.0",
-            "setuptools_scm[toml]>=6.2",
-            "wheel",
-            "numpy"]
-build-backend = "setuptools.build_meta"
+requires = [
+    "scikit-build-core>=0.10",
+    "setuptools-scm[toml]>=6.2",
+    "numpy",
+    "cmake>=3.15",
+    "pathspec<0.12",
+]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "spotiflow"
+dynamic = ["version"]
+description = "Accurate and efficient spot detection for microscopy data"
+readme = "README.md"
+license = { text = "BSD 3-Clause License" }
+authors = [
+    { name = "Albert Dominguez Mantes", email = "albert.dominguezmantes@epfl.ch" },
+    { name = "Martin Weigert", email = "martin.weigert@epfl.ch" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.9,<3.15"
+dependencies = [
+    "configargparse",
+    "csbdeep",
+    "dask",
+    "lightning",
+    "networkx",
+    "numpy",
+    "pandas",
+    "Pillow",
+    "pydash",
+    "scikit-image",
+    "scipy",
+    "setuptools",
+    "psutil",
+    "tensorboard",
+    "tifffile",
+    "torch",
+    "torchvision",
+    "tqdm",
+    "typing-extensions",
+    "wandb!=0.23.1",
+    "zarr",
+]
+
+[project.scripts]
+spotiflow-predict = "spotiflow.cli.predict:main"
+spotiflow-train = "spotiflow.cli.train:main"
+
+[project.optional-dependencies]
+testing = ["pytest", "pytest-cov", "pytest-mock", "tox"]
+docs    = ["sphinx<9.0", "sphinx-immaterial"]
+napari  = ["napari-spotiflow"]
+
+[tool.scikit-build]
+wheel.packages = ["spotiflow"]
+metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
+sdist.include = ["spotiflow/_version.py"]
 
 [tool.setuptools_scm]
 write_to = "spotiflow/_version.py"
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch      = [{ index = "pytorch", marker = "sys_platform != 'darwin'" }]
+torchvision = [{ index = "pytorch", marker = "sys_platform != 'darwin'" }]
